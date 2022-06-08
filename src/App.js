@@ -1,5 +1,7 @@
-import logo from './logo.svg';
+// import logo from './logo.svg';
 import './App.css';
+import Button from '@mui/material/Button';
+import ButtonGroup from '@mui/material/ButtonGroup';
 
 function Header() {
   return <header>
@@ -27,32 +29,27 @@ function Article(props) {
   </article>
 }
 
+
 function App() {
   const topics = [
     {id: 1, title: 'html', body: 'html is ...'},
     {id: 2, title: 'css', body: 'css is ...'},
-  ]
+  ];
+
   return (
-    // <div className="App">
-    //   <header className="App-header">
-    //     <img src={logo} className="App-logo" alt="logo" />
-    //     <p>
-    //       Edit <code>src/App.js</code> and save to reload.
-    //     </p>
-    //     <a
-    //       className="App-link"
-    //       href="https://reactjs.org"
-    //       target="_blank"
-    //       rel="noopener noreferrer"
-    //     >
-    //       Learn React
-    //     </a>
-    //   </header>
-    // </div>
     <div>
-      <Header></Header>
+      <Header onSelect={() => {
+        alert('Header!!!');
+      }}></Header>
       <Nav data={topics}></Nav>
       <Article title="Welcome" body="Hello, Web!"></Article>
+      <ButtonGroup variant="outlined" aria-label="outlined button group" size="small" color="secondary">
+        <Button variant='outlined' onClick={() => {
+          alert('create!');
+        }}>Create</Button>
+        <Button variant='outlined'>Update</Button>
+        <Button variant='outlined'>Delete</Button>
+      </ButtonGroup>
     </div>
   );
 }
