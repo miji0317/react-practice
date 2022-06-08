@@ -1,5 +1,6 @@
 // import logo from './logo.svg';
 import './App.css';
+import {useState} from 'react';
 import Button from '@mui/material/Button';
 import ButtonGroup from '@mui/material/ButtonGroup';
 
@@ -32,24 +33,43 @@ function Article(props) {
     <h2>{props.title}</h2>
     {props.body}
   </article>
-}
-
+};
 
 function App() {
+  // state를 읽을 때는 mode, 바꿀 때는 setMode, 초기 상태는 useState
+  const [mode, setMode] = useState('WELCOME');
+  const [id, setId] = useState(null);
+  console.log(mode, id);
+
   const topics = [
     {id: 1, title: 'html', body: 'html is ...'},
     {id: 2, title: 'css', body: 'css is ...'},
   ];
 
+  let content = null;
+  if (mode === 'WELCOME') {
+    content = <Article title="Welcome" body="Hello, Web!"></Article>
+  } else if (mode === 'READ') {
+    const topic = topics.filter(e => {
+    if (e.id === id) {
+      return true;
+    } else {
+      return false;
+    }
+  })[0];
+  content = <Article title={topic.title} body={topic.body}></Article>
+  }
+
   return (
     <div>
       <Header onSelect={() => {
-        alert('Header!!!');
+       setMode('WELCOME');
       }}></Header>
       <Nav data={topics} onSelect={(id) => {
-        alert('Nav!!!' + ',' + id);
+        setMode('READ');
+        setId(id);
       }}></Nav>
-      <Article title="Welcome" body="Hello, Web!"></Article>
+      {content}
       <ButtonGroup variant="outlined" aria-label="outlined button group" size="small" color="secondary">
         <Button variant='outlined' onClick={() => {
           alert('create!');
