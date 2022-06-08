@@ -3,16 +3,21 @@ import './App.css';
 import Button from '@mui/material/Button';
 import ButtonGroup from '@mui/material/ButtonGroup';
 
-function Header() {
-  return <header>
-    <h1><a href="/">Web</a></h1>
-  </header>
+function Header(props) {
+  console.log(props);
+  return <header><h1><a href="/" onClick={(evt) => {
+    console.log('evt', evt);
+    evt.preventDefault();
+    props.onSelect();
+  }}>Web</a></h1></header>
 }
 
 function Nav(props) {
-  console.log('props', props.data)
   const list = props.data.map((e) => {
-    return <li key={e.id}><a href={'/read/'+e.id}>{e.title}</a></li>
+    return <li key={e.id}><a href={'/read/'+e.id} onClick={(evt) => {
+      evt.preventDefault();
+      props.onSelect(e.id);  
+    }}>{e.title}</a></li>
   });
   // const list = [
   //   <li><a href="/read/1">html</a></li>,
@@ -41,7 +46,9 @@ function App() {
       <Header onSelect={() => {
         alert('Header!!!');
       }}></Header>
-      <Nav data={topics}></Nav>
+      <Nav data={topics} onSelect={(id) => {
+        alert('Nav!!!' + ',' + id);
+      }}></Nav>
       <Article title="Welcome" body="Hello, Web!"></Article>
       <ButtonGroup variant="outlined" aria-label="outlined button group" size="small" color="secondary">
         <Button variant='outlined' onClick={() => {
