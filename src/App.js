@@ -16,11 +16,7 @@ function Nav(props) {
   //   <li><a href="/read/1">html</a></li>,
   //   <li><a href="/read/2">css</a></li>
   // ]
-  return <nav>
-    <ol>
-      {list}
-    </ol>
-  </nav>
+  return <nav><ol>{list}</ol></nav>
 }
 
 function Article(props) {
