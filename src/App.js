@@ -4,7 +4,7 @@ import {useState} from 'react';
 import Button from '@mui/material/Button';
 import ButtonGroup from '@mui/material/ButtonGroup';
 import styled from 'styled-components';
-import { Link, Routes, Route, useParams } from 'react-router-dom';
+import { Link, Routes, Route, useParams, useNavigate } from 'react-router-dom';
 
 // Header 컴포넌트
 function Header(props){
@@ -62,6 +62,35 @@ function Create(props) {
   </article>
 }
 
+function Read(props) {
+  const params = useParams();
+  const id = Number(params.topic_id);
+  const topic = props.topics.filter(e=>{
+    if(e.id === id) {
+      return true;
+    } else {
+      return false;
+    }
+  })[0];
+  return <Article title={topic.title} body={topic.body}></Article>
+}
+
+function Control(props) {
+  const params = useParams();
+  const id = Number(params.topic_id);
+  let contextUI = null;
+  if (id) {
+    contextUI = <>
+      <Button variant="outlined">Update</Button>
+      <Button variant="outlined" onClick={() => {props.onDelete(id);}}>Delete</Button>
+    </>
+  }
+  return <>
+    <Button component={Link} to="/create" variant="outlined">Create</Button>        
+    {contextUI}
+  </>
+}
+
 // App
 function App() {
   const [mode,setMode] = useState('WELCOME');  // todo 삭제
@@ -72,6 +101,8 @@ function App() {
     {id:2, title:'css', body:'css is ...'},
   ]);
 
+  const navigate = useNavigate();
+
   return (
     <div>
       <HeaderStyled onSelect={headerHandler()}></HeaderStyled>
@@ -81,28 +112,18 @@ function App() {
         <Route path="/create" element={<Create onCreate={onCreateHandler()}></Create>}></Route>
         <Route path="/read/:topic_id" element={<Read topics={topics}></Read>}></Route>
       </Routes>
-      <ButtonGroup>
-        <Button component={Link} to="/create" variant="outlined" onClick={createHandler()}>Create</Button>        
-        <Button variant="outlined">Update</Button>
-      </ButtonGroup>
-      <Button variant="outlined" onClick={deleteHandler()}>Delete</Button>
+
+      <Routes>
+        {['/', '/read/:topic_id', '/update/:topic_id'].map(path => {
+          return <Route key={path} path={path} element={<Control onDelete={(id) => {
+            deleteHandler(id);
+          }}></Control>}></Route>
+        })}
+      </Routes>
     </div>
   );
 
   // return 내부에 있던 함수들을 분리(Refactor)
-  
-  function Read(props) {
-    const params = useParams();
-    const id = Number(params.topic_id);
-    const topic = props.topics.filter(e=>{
-      if(e.id === id) {
-        return true;
-      } else {
-        return false;
-      }
-    })[0];
-    return <Article title={topic.title} body={topic.body}></Article>
-  }
 
   function onCreateHandler() {
     return (title, body) => {
@@ -123,18 +144,16 @@ function App() {
     };
   }
 
-  function deleteHandler() {
-    return () => {
-      const newTopics = topics.filter((e) => {
-        if (e.id === id) {
-          return false;
-        } else {
-          return true;
-        }
-      });
-      setMode('WELCOME');
-      setTopics(newTopics);
-    };
+  function deleteHandler(id) {
+    const newTopics = topics.filter((e) => {
+      if (e.id === id) {
+        return false;
+      } else {
+        return true;
+      }
+    });
+    setTopics(newTopics);
+    navigate('/');  // 삭제 되면 루트로 이동
   }
 
   function createHandler() {
