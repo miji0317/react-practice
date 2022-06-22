@@ -1,14 +1,8 @@
 {
-  "topics": [
-    {
-      "id": 1,
-      "title": "json-server",
-      "body": "json-server is ...."
-    },
-    {
-      "id": 2,
-      "title": "react",
-      "body": "react is ...."
-    }
-  ]
+  "countUp": {
+    "value": 1
+  },
+  "countDown": {
+    "value": 0
+  }
 }
