@@ -5,12 +5,14 @@ import ReactDOM from 'react-dom/client';
 // import App from './Example/Reducer';
 // import App from './Example/ExPropsDrilling';
 // import App from './Example/ExUseReducer';
-import App from './Example/ExRedux'
+// import App from './Example/ExRedux'
+import App from './Example/ReduxToolkit'
 import reportWebVitals from './reportWebVitals';
 import {BrowserRouter} from 'react-router-dom';
 
-// ExRedux
-import store from "./Example/ExStore";
+// Redux
+// import store from "./Example/store";
+import store from "./Example/sliceStore";
 import { Provider } from "react-redux";
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
