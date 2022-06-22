@@ -1,5 +1,5 @@
 import { useState } from "react";
-import "./ReduxEx.css";
+import "./ExStyle.css";
 
 function Left1(props) {
   return (
